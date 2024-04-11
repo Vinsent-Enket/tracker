@@ -45,7 +45,7 @@ class Periodicity(models.Model):
         return int_weeks
 
     def __str__(self):
-        return f'Периодичность привычки - {Periodicity.objects.get(pk=self.pk).addiction_set.activity_name}'
+        return f'Периодичность привычки - {Periodicity.objects.get(pk=self.pk).addiction_set}'
 
     class Meta:
         verbose_name = 'Периодичность'
@@ -61,7 +61,7 @@ class NiceAddiction(models.Model):
     activity_name = models.TextField(verbose_name="Что делаю", default="балду гоняю")
 
     def __str__(self):
-        return f'Приятная привычка {self.activity_name} связанная с - {NiceAddiction.objects.get(pk=self.pk).addiction_set.activity_name}'
+        return f'Приятная привычка {self.activity_name} связанная с - {NiceAddiction.objects.get(pk=self.pk).addiction_set}'
 
     class Meta:
         verbose_name = 'Приятная привычка'
@@ -75,7 +75,7 @@ class Addiction(models.Model):
     proprietor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE,
                                    verbose_name='Владелец')
     location = models.CharField(max_length=50, verbose_name='Где делаю', default="Где-то")
-    time = models.TimeField(verbose_name='Когда делаю', auto_now=True)
+    time = models.TimeField(verbose_name='Когда делаю')
     activity_name = models.TextField(verbose_name="Что делаю", default="балду гоняю")
     nice_addiction = models.ForeignKey(NiceAddiction, on_delete=models.CASCADE,
                                        verbose_name='Связанная полезная привычка', blank=True, null=True, default=None)
@@ -83,6 +83,7 @@ class Addiction(models.Model):
     prize = models.TextField(verbose_name='Награда', **NULLABLE)
     run_time = models.IntegerField(verbose_name='Длительность в секундах', default=120)
     is_public = models.BooleanField(verbose_name='Публичная привычка')
+    last_send = models.TimeField(verbose_name='Дата последнего отправки', auto_now=True)
 
     def __str__(self):
         return f'Полезная привычка {self.activity_name}'

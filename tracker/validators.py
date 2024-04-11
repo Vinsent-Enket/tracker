@@ -12,7 +12,6 @@ class RunTimeValidation:
         self.field = field
 
     def __call__(self, value):
-        print("зашел в валидатор ран тайм")
         run_time = dict(value).get(self.field)
         if run_time > 120:
             raise ValidationError("Время выполенения должно быть не меньше 120 секунд")

@@ -59,7 +59,6 @@ class PeriodicityUpdateAPIView(generics.UpdateAPIView):
         :return:
         """
 
-
         periodicity_id = self.request.data.get('periodicity_id')
         try:
             periodicity = get_object_or_404(Periodicity, pk=periodicity_id)
@@ -71,7 +70,7 @@ class PeriodicityUpdateAPIView(generics.UpdateAPIView):
             periodicity.on_Saturday = self.request.data.get('on_Saturday')
             periodicity.on_Sunday = self.request.data.get('on_Sunday')
             periodicity.save()
-            message = f'У привычки {periodicity.addiction_set.activity_name} произведена смена периодичности'
+            message = f'У привычки {periodicity.addiction_set} произведена смена периодичности'
         except periodicity.DoesNotExist:
             message = f'Передан некоректный id - {periodicity_id}'
         except KeyError:
