@@ -74,6 +74,6 @@ class PeriodicityUpdateAPIView(generics.UpdateAPIView):
         except periodicity.DoesNotExist:
             message = f'Передан некоректный id - {periodicity_id}'
         except KeyError:
-            message = f'Не переданы все поля'
+            message = 'Не переданы все поля'
 
         return Response({'message': message})

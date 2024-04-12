@@ -64,7 +64,8 @@ class AddictionViewSetTest(APITestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_addiction_viewset_list(self):
-        response = self.client.get('http://127.0.0.1:8000/addict/')  # проблема с реверсе, 'tracker:addict' не работает
+        response = self.client.get('http://127.0.0.1:8000/addict/')  # проблема с реверсе,
+        # 'tracker:addict' не работает
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_addiction_viewset_create(self):

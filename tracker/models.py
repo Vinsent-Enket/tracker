@@ -9,8 +9,9 @@ NULLABLE = {'blank': True, 'null': True}
 
 class Periodicity(models.Model):
     """
-    Модель для периодичности, выведена в отдельную модель так как при масштабировании проекта потребуется каждой
-    модели добавлять поля для периодичности
+    Модель для периодичности, выведена в отдельную модель
+     так как при масштабировании проекта потребуется каждой
+     модели добавлять поля для периодичности
     """
     on_Monday = models.BooleanField(verbose_name='В понедельник', default=False)
     on_Tuesday = models.BooleanField(verbose_name='Во вторник', default=False)
@@ -61,7 +62,8 @@ class NiceAddiction(models.Model):
     activity_name = models.TextField(verbose_name="Что делаю", default="балду гоняю")
 
     def __str__(self):
-        return f'Приятная привычка {self.activity_name} связанная с - {NiceAddiction.objects.get(pk=self.pk).addiction_set}'
+        return (f'Приятная привычка {self.activity_name}'
+                f' связанная с - {NiceAddiction.objects.get(pk=self.pk).addiction_set}')
 
     class Meta:
         verbose_name = 'Приятная привычка'
@@ -70,7 +72,8 @@ class NiceAddiction(models.Model):
 
 class Addiction(models.Model):
     """
-    Модель привычки содержащая в себе собственные аттрибуты, а также связанная с объектом периодичность и приятная привычка
+    Модель привычки содержащая в себе собственные аттрибуты,
+     а также связанная с объектом периодичность и приятная привычка
     """
     proprietor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE,
                                    verbose_name='Владелец')
@@ -78,7 +81,8 @@ class Addiction(models.Model):
     time = models.TimeField(verbose_name='Когда делаю')
     activity_name = models.TextField(verbose_name="Что делаю", default="балду гоняю")
     nice_addiction = models.ForeignKey(NiceAddiction, on_delete=models.CASCADE,
-                                       verbose_name='Связанная полезная привычка', blank=True, null=True, default=None)
+                                       verbose_name='Связанная полезная привычка',
+                                       blank=True, null=True, default=None)
     periodicity = models.ForeignKey(Periodicity, on_delete=models.CASCADE, verbose_name='Периодичность')
     prize = models.TextField(verbose_name='Награда', **NULLABLE)
     run_time = models.IntegerField(verbose_name='Длительность в секундах', default=120)

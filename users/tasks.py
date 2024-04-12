@@ -23,7 +23,8 @@ def reminder():
     addictions = Addiction.objects.all()
     for addiction in addictions:
         if (day_of_week in addiction.periodicity.int_weeks) and (addiction.last_send < today.time()) and (
-                addiction.time.hour == time_now.hour):  # проверка соответствия дня недели и времени и отправлялось ли сегодня
+                addiction.time.hour == time_now.hour):
+                # проверка соответствия дня недели и времени и отправлялось ли сегодня
             timer = addiction.time.minute - time_now.minute
 
             text = (
@@ -46,4 +47,3 @@ def reminder():
             return response.status_code
         else:
             return False
-
