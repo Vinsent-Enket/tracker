@@ -1,4 +1,4 @@
-version: '3'
+version: '3.12'
 
 services:
   redis:
@@ -6,11 +6,10 @@ services:
     ports:
       - '6379:6379'
 
-
   db:
     image: postgres
     env_file:
-      - .env
+      - .env.sample
 #    environment:
 #      - POSTGRES_PASSWORD=mysecretpassword
 #      - PGDATA=/var/lib/postgresql/data/pgdata
@@ -26,10 +25,11 @@ services:
 
 
   app:
+    env_file:
+      - .env.sample
     build: .
     tty: true
-    command: bash -c "python manage.py migrate && python manage.py runserver"
-
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - '8000:8000'
     volumes:
@@ -46,6 +46,8 @@ services:
      - redis
      - app
 
+
+
   celery_beat:
     build: .
     tty: true
@@ -53,13 +55,16 @@ services:
     depends_on:
       - redis
       - app
-      - celery
+
 
   telegram_bot:
+    env_file:
+      - .env.sample
     build: .
     tty: true
     command: python telegram_bot.py
-
+    depends_on:
+      - app
 
 
 

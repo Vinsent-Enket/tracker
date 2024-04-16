@@ -13,14 +13,11 @@ import asyncio
 import os
 from datetime import timedelta
 from pathlib import Path
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-dot_env = os.path.join(BASE_DIR, '.env')
-load_dotenv(dotenv_path=dot_env)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -90,11 +87,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('ENGINE_DATABASE_SETTING'),
-        'NAME': os.getenv('NAME_DATABASE_SETTING'),
-        'USER': os.getenv('USER_DATABASE_SETTING'),
-        'PASSWORD': os.getenv('PASSWORD_DATABASE_SETTING'),
-        'HOST': os.getenv('PORT_DATABASE_SETTING')
+        'ENGINE': os.getenv('ENGINE_DATABASE'),
+        'NAME': os.getenv('POSTGRES_DATABASE_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('HOST_DATABASE')
     }
 }
 
@@ -164,18 +161,13 @@ CSRF_TRUSTED_ORIGINS = [
     "https://read-and-write.example.com",
 ]
 
-# настройки для отправки писем
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = os.getenv('MAIL_RU_LOGIN')
-EMAIL_HOST_PASSWORD = os.getenv('MAIL_RU_PASSWORD')
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+#
 CACHES_LOCATION = os.getenv('CELERY_URL')
 CELERY_BROKER_URL = os.getenv('CELERY_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_URL')
+
+
+
 
 CELERY_BEAT_SCHEDULE = {
     'task-name': {
