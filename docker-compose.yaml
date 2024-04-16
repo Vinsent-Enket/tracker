@@ -1,18 +1,19 @@
-version: '3.12'
+version: '3'
 
 services:
   redis:
     image: redis
+    command: redis-server
+
     ports:
       - '6379:6379'
+    networks:
+      - backend_network
 
   db:
     image: postgres
     env_file:
-      - .env.sample
-#    environment:
-#      - POSTGRES_PASSWORD=mysecretpassword
-#      - PGDATA=/var/lib/postgresql/data/pgdata
+      - .env
     volumes:
       - pg_data:/var/lib/postgresql/data/pgdata
     ports:
@@ -22,11 +23,13 @@ services:
      interval: 10s
      timeout: 5s
      retries: 5
+    networks:
+      - backend_network
 
 
   app:
     env_file:
-      - .env.sample
+      - .env
     build: .
     tty: true
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
@@ -37,36 +40,52 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - backend_network
 
   celery:
+   env_file:
+      - .env
    build: .
    tty: true
    command: celery -A config worker -l INFO
+
    depends_on:
      - redis
      - app
+   networks:
+     - backend_network
 
 
 
   celery_beat:
+    env_file:
+      - .env
     build: .
     tty: true
     command: celery -A config beat -l INFO
+
     depends_on:
       - redis
       - app
+    networks:
+      - backend_network
 
 
   telegram_bot:
     env_file:
-      - .env.sample
+      - .env
     build: .
     tty: true
     command: python telegram_bot.py
     depends_on:
       - app
 
+networks:
 
+  backend_network:
+    driver: bridge
 
 volumes:
   pg_data:
+

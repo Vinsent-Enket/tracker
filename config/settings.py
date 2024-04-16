@@ -17,8 +17,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -166,8 +164,8 @@ CACHES_LOCATION = os.getenv('CELERY_URL')
 CELERY_BROKER_URL = os.getenv('CELERY_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_URL')
 
-
-
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  #'redis://localhost:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
     'task-name': {
